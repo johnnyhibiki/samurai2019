@@ -20,12 +20,12 @@ public class GameManager {
 		return iMap;
 	}
 
-	private static byte[][] createMerginMap(int w, int h, byte[][] map, int mergin) {
-		int hh = h + mergin * 2;
+	private static byte[][] createMarginMap(int w, int h, byte[][] map, int margin) {
+		int hh = h + margin * 2;
 		byte[][] mMap = new byte[hh][w];
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
-				mMap[i + mergin][j] = map[i][j];
+				mMap[i + margin][j] = map[i][j];
 			}
 		}
 
@@ -33,11 +33,11 @@ public class GameManager {
 	}
 
 	static void action(int w, int h, byte[][] map, int[][] pInfos, double[] goal, String[] com, int step) {
-		int mergin = 30;
+		int margin = 30;
 
 		int[][] oInfos = Util.copyIntMap(pInfos);
 
-		byte[][] mMap = createMerginMap(w, h, map, mergin);
+		byte[][] mMap = createMarginMap(w, h, map, margin);
 
 		for (int id = 0; id < 2; id++) {
 			if (goal[id] > 0) {
@@ -50,7 +50,7 @@ public class GameManager {
 			pInfos[id][0] += pInfos[id][2];
 			pInfos[id][1] += pInfos[id][3];
 
-			if (Util.checkCourseOut(oInfos[id][0], oInfos[id][1] + mergin, pInfos[id][0], pInfos[id][1] + mergin,
+			if (Util.checkCourseOut(oInfos[id][0], oInfos[id][1] + margin, pInfos[id][0], pInfos[id][1] + margin,
 					mMap)) {
 				pInfos[id][0] = oInfos[id][0];
 				pInfos[id][1] = oInfos[id][1];
@@ -58,7 +58,7 @@ public class GameManager {
 				pInfos[id][3] = 0;
 			}
 
-			if (mMap[pInfos[id][1] + mergin][pInfos[id][0]] == 2) {
+			if (mMap[pInfos[id][1] + margin][pInfos[id][0]] == 2) {
 				pInfos[id][2] = 0;
 				pInfos[id][3] = 0;
 			}
@@ -66,8 +66,8 @@ public class GameManager {
 
 		if (goal[0] == 0.0 && goal[1] == 0.0 && Util.checkCross(oInfos[0][0], oInfos[0][1], pInfos[0][0], pInfos[0][1],
 				oInfos[1][0], oInfos[1][1], pInfos[1][0], pInfos[1][1])) {
-			int priority = Util.checkPriority(oInfos[0][0], oInfos[0][1] + mergin, pInfos[0][0], pInfos[0][1] + mergin,
-					oInfos[1][0], oInfos[1][1] + mergin, pInfos[1][0], pInfos[1][1] + mergin, mMap);
+			int priority = Util.checkPriority(oInfos[0][0], oInfos[0][1] + margin, pInfos[0][0], pInfos[0][1] + margin,
+					oInfos[1][0], oInfos[1][1] + margin, pInfos[1][0], pInfos[1][1] + margin, mMap);
 
 			if (priority == 0 || priority == 2) {
 				pInfos[1][0] = oInfos[1][0];

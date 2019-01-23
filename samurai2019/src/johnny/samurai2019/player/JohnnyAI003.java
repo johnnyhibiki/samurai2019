@@ -15,7 +15,7 @@ public class JohnnyAI003 implements AIBase {
 	private int vxmin, vxmax, vymin, vymax, vxb, vyb, hh, preVis;
 	private byte[][] pMap;
 
-	static final private int Y_MERGIN = 30;
+	static final private int Y_MARGIN = 30;
 
 	class State {
 		int x, y, vx, vy;
@@ -42,7 +42,7 @@ public class JohnnyAI003 implements AIBase {
 	}
 
 	private void initInternal() {
-		hh = h + Y_MERGIN * 2;
+		hh = h + Y_MARGIN * 2;
 
 		vxmax = -1;
 		vxmin = -1;
@@ -80,24 +80,24 @@ public class JohnnyAI003 implements AIBase {
 		}
 
 		byte[][] mMap = new byte[hh][w];
-		int nowVis2 = h + Y_MERGIN;
+		int nowVis2 = h + Y_MARGIN;
 		for (int i = 0; i < h; i++) {
 			if (pMap[i][0] == -1) {
 				nowVis2 = Math.min(nowVis2, i);
 			} else {
 				for (int j = 0; j < w; j++) {
-					mMap[i + Y_MERGIN][j] = pMap[i][j];
+					mMap[i + Y_MARGIN][j] = pMap[i][j];
 				}
 			}
 		}
-		nowVis2 += Y_MERGIN;
+		nowVis2 += Y_MARGIN;
 
 		boolean oFin = opInfo[1] == h;
 
 		int mx = mpInfo[0];
-		int my = mpInfo[1] + Y_MERGIN;
+		int my = mpInfo[1] + Y_MARGIN;
 		int ox = opInfo[0];
-		int oy = oFin ? 0 : opInfo[1] + Y_MERGIN;
+		int oy = oFin ? 0 : opInfo[1] + Y_MARGIN;
 
 		boolean[] stateTable = new boolean[w * hh * vxb * vyb];
 		List<State> stateList = new ArrayList<State>();
@@ -168,7 +168,7 @@ public class JohnnyAI003 implements AIBase {
 
 			boolean out = false;
 			for (State state : stateList) {
-				if (state.y >= h + Y_MERGIN) {
+				if (state.y >= h + Y_MARGIN) {
 					out = true;
 					break;
 				}

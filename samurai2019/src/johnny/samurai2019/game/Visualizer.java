@@ -20,7 +20,7 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 	private int tt, stepLimit, h, w, v;
 	private GameInfoModel data;
 
-	static final private int MERGIN = 30;
+	static final private int MARGIN = 30;
 	static final private int VISV = 9;
 
 	/**
@@ -185,14 +185,14 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 
 		inputs = new String[stepLimit + 1][2];
 		outputs = new String[stepLimit + 1][2];
-		mMap = new byte[h + MERGIN * 2][w];
+		mMap = new byte[h + MARGIN * 2][w];
 		map = new byte[h][w];
 		goal = new double[2];
 
 		for (int i = 0; i < data.getSquares().length; i++) {
 			int y = i / data.getWidth();
 			int x = i % data.getWidth();
-			mMap[y + MERGIN][x] = data.getSquares()[i];
+			mMap[y + MARGIN][x] = data.getSquares()[i];
 			map[y][x] = data.getSquares()[i];
 		}
 
@@ -301,7 +301,7 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 			for (int i = 0; i < mMap.length; i++) {
 				for (int j = 0; j < w; j++) {
 					int x = j * d;
-					int y = (i - MERGIN) * d;
+					int y = (i - MARGIN) * d;
 					if (id <= 1) {
 						y += (VISV - pInfos[step][id][1]) * d;
 					}
@@ -318,10 +318,10 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 					g.drawRect(x, y, d, d);
 				}
 
-				if (i == MERGIN || i == h + MERGIN) {
+				if (i == MARGIN || i == h + MARGIN) {
 					int x0 = 0;
 					int x1 = (w + 1) * d;
-					int y = d / 2 + (i - MERGIN) * d;
+					int y = d / 2 + (i - MARGIN) * d;
 					if (id <= 1) {
 						y += (VISV - pInfos[step][id][1]) * d;
 					}
