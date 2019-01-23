@@ -370,7 +370,7 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 
 				AIBase[] players = new AIBase[2];
 				for (int i = 0; i < 2; i++) {
-					players[i] = (AIBase) cls[i].newInstance();
+					players[i] = (AIBase) cls[i].getDeclaredConstructor().newInstance();
 					String init = players[i].init(tt, stepLimit, w, h, v);
 					System.out.println(init);
 				}
