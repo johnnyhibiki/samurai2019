@@ -263,22 +263,30 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 		}
 	}
 
+	private void startGame () {
+		gameThread = new GameThread();
+		gameThread.start();
+	}
+
+	private void stopGame () {
+		if (gameThread != null) gameThread.interrupt();
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == startButton) {
-			gameThread = new GameThread();
-			gameThread.start();
+			startGame();
 			startButton.setEnabled(false);
 			repaintCanvas();
 		} else if (e.getSource() == courseSB) {
 			reset();
-			gameThread.interrupt();
+			stopGame();
 		} else if (e.getSource() == ai0SB) {
 			reset();
-			gameThread.interrupt();
+			stopGame();
 		} else if (e.getSource() == ai1SB) {
 			reset();
-			gameThread.interrupt();
+			stopGame();
 		}
 	}
 
