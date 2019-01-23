@@ -9,19 +9,19 @@ import java.util.Scanner;
 
 public class JohnnyAI003 implements AIBase {
 
-	int thinkTime, stepLimit, w, h, v;
+	private int thinkTime, stepLimit, w, h, v;
 
-	CourseGenerator generator;
-	int vxmin, vxmax, vymin, vymax, vxb, vyb, hh, preVis;
-	byte[][] pMap;
+	private CourseGenerator generator;
+	private int vxmin, vxmax, vymin, vymax, vxb, vyb, hh, preVis;
+	private byte[][] pMap;
 
-	static final int Y_MERGIN = 30;
+	static final private int Y_MERGIN = 30;
 
 	class State {
 		int x, y, vx, vy;
 		byte ax, ay;
 
-		public State(int x, int y, int vx, int vy, byte ax, byte ay) {
+		State(int x, int y, int vx, int vy, byte ax, byte ay) {
 			this.x = x;
 			this.y = y;
 			this.vx = vx;
@@ -41,7 +41,7 @@ public class JohnnyAI003 implements AIBase {
 		}
 	}
 
-	void initInternal() {
+	private void initInternal() {
 		hh = h + Y_MERGIN * 2;
 
 		vxmax = -1;

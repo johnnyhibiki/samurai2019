@@ -9,14 +9,14 @@ import java.util.Scanner;
 
 public class JohnnyAI001 implements AIBase {
 
-	int thinkTime, stepLimit, w, h, v;
-	int vxmin, vxmax, vymin, vymax, ymin, ymax, vxb, vyb, xb, yb;
+	private int thinkTime, stepLimit, w, h, v;
+	private int vxmin, vxmax, vymin, vymax, ymin, ymax, vxb, vyb, xb, yb;
 
-	CourseGenerator g;
-	int preVis;
-	byte[][] pMap, mMap;
+	private CourseGenerator g;
+	private int preVis;
+	private byte[][] pMap, mMap;
 
-	void initV() {
+	private void initV() {
 		int sum = 0;
 		vxmax = -1;
 		vxmin = -1;
@@ -52,7 +52,7 @@ public class JohnnyAI001 implements AIBase {
 		int x, y, vx, vy, eval;
 		byte ax, ay;
 
-		public State(int x, int y, int vx, int vy, byte ax, byte ay, int eval) {
+		State(int x, int y, int vx, int vy, byte ax, byte ay, int eval) {
 			this.x = x;
 			this.y = y;
 			this.vx = vx;
@@ -221,7 +221,7 @@ public class JohnnyAI001 implements AIBase {
 		}
 	}
 
-	void test() {
+	private void test() {
 
 	}
 

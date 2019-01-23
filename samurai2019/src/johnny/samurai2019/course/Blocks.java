@@ -1,8 +1,8 @@
 package johnny.samurai2019.course;
 
-public class Blocks {
+class Blocks {
 
-	public static byte[][][][] BLOCKS = {
+	static byte[][][][] BLOCKS = {
 			{},
 			{},
 			{},

@@ -9,7 +9,7 @@ import java.util.List;
 public class Util {
 
 	public static int MERGIN = 30;
-	public static ObjectMapper MAPPER = new ObjectMapper();
+	private static ObjectMapper MAPPER = new ObjectMapper();
 
 	public static GameInfoModel readGameInfoModel(String filePath) {
 		try {

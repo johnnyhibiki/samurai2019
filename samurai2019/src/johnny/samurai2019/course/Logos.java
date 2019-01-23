@@ -1,8 +1,8 @@
 package johnny.samurai2019.course;
 
-public class Logos {
+class Logos {
 
-	public static byte[][][][] LOGOS = {
+	static byte[][][][] LOGOS = {
 			{},
 			{},
 			{},

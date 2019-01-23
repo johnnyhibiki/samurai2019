@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GameManager {
 
-	public static byte[][] createInputMap(byte[][] map, int w, int h, int visLimit) {
+	static byte[][] createInputMap(byte[][] map, int w, int h, int visLimit) {
 		byte[][] iMap = new byte[h][w];
 
 		for (int i = 0; i < h; i++) {
@@ -20,7 +20,7 @@ public class GameManager {
 		return iMap;
 	}
 
-	public static byte[][] createMerginMap(int w, int h, byte[][] map, int mergin) {
+	private static byte[][] createMerginMap(int w, int h, byte[][] map, int mergin) {
 		int hh = h + mergin * 2;
 		byte[][] mMap = new byte[hh][w];
 		for (int i = 0; i < h; i++) {
@@ -32,7 +32,7 @@ public class GameManager {
 		return mMap;
 	}
 
-	public static void action(int w, int h, byte[][] map, int[][] pInfos, double[] goal, String[] com, int step) {
+	static void action(int w, int h, byte[][] map, int[][] pInfos, double[] goal, String[] com, int step) {
 		int mergin = 30;
 
 		int[][] oInfos = Util.copyIntMap(pInfos);
@@ -90,7 +90,7 @@ public class GameManager {
 		}
 	}
 
-	double[] run(String courseFilePath, String ai0Name, String ai1Name) {
+	private double[] run(String courseFilePath, String ai0Name, String ai1Name) {
 		double[] goal = new double[2];
 
 		try {
@@ -160,7 +160,7 @@ public class GameManager {
 		return goal;
 	}
 
-	void test() {
+	private void test() {
 		List<String> courseNames = Util.getCourseNameList();
 		String[] aiNames = {"JohnnyAI001", "JohnnyAI003"};
 

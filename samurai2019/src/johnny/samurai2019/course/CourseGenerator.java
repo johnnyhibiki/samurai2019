@@ -8,22 +8,22 @@ import java.util.List;
 
 public class CourseGenerator {
 
-	static int[] DY = {0, 1, 0, -1};
-	static int[] DX = {1, 0, -1, 0};
+	static private int[] DY = {0, 1, 0, -1};
+	static private int[] DX = {1, 0, -1, 0};
 
-	static int WMIN = 5;
-	static int WMAX = 20;
-	static int LMIN = 50;
-	static int LMAX = 100;
-	static int VMIN = 5;
-	static int VMAX = 20;
+	static private int WMIN = 5;
+	static private int WMAX = 20;
+	static private int LMIN = 50;
+	static private int LMAX = 100;
+	static private int VMIN = 5;
+	static private int VMAX = 20;
 
-	final int w;
-	final int h;
-	final int v;
-	final boolean s;
+	final private int w;
+	final private int h;
+	final private int v;
+	final private boolean s;
 
-	byte[][] firstLogo, lastLogo;
+	private byte[][] firstLogo, lastLogo;
 
 	public CourseGenerator() {
 		this.w = randomWidth();
@@ -46,11 +46,11 @@ public class CourseGenerator {
 		this.s = s;
 	}
 
-	int randomRange(int from, int to) {
+	private int randomRange(int from, int to) {
 		return (int) (Math.random() * (to - from)) + from;
 	}
 
-	byte[][] genG(int ww, boolean sym) {
+	private byte[][] genG(int ww, boolean sym) {
 		printDebugMsg("genG");
 
 		int t = (int) (Math.random() * (sym ? 3 : 5));
@@ -105,7 +105,7 @@ public class CourseGenerator {
 		return block;
 	}
 
-	byte[][] genPond(int ww, boolean sym) {
+	private byte[][] genPond(int ww, boolean sym) {
 		printDebugMsg("genPond");
 
 		int d = (int) (Math.random() * 4) + 1;
@@ -135,7 +135,7 @@ public class CourseGenerator {
 		return m;
 	}
 
-	byte[][] genOneRocks(int ww, boolean sym) {
+	private byte[][] genOneRocks(int ww, boolean sym) {
 		printDebugMsg("genOneRocks");
 
 		int d = (int) (Math.random() * 4) + 1;
@@ -160,7 +160,7 @@ public class CourseGenerator {
 		return m;
 	}
 
-	byte[][] makeShape(int ww, int hh) {
+	private byte[][] makeShape(int ww, int hh) {
 		byte[][] shape = new byte[hh][ww];
 		for (int i = 0; i < hh; i++) {
 			for (int j = 0; j < ww; j++) {
@@ -189,7 +189,7 @@ public class CourseGenerator {
 		return shape;
 	}
 
-	void putShape(byte[][] m, byte[][] shape, int sx, int sy, byte color, boolean sym) {
+	private void putShape(byte[][] m, byte[][] shape, int sx, int sy, byte color, boolean sym) {
 		int sw = shape[0].length;
 		int sh = shape.length;
 		int ww = m[0].length;
@@ -219,7 +219,7 @@ public class CourseGenerator {
 		}
 	}
 
-	byte[][] genAreas(int ww, boolean sym) {
+	private byte[][] genAreas(int ww, boolean sym) {
 		printDebugMsg("genAreas");
 
 		int hh = randomRange(3, 10);
@@ -257,7 +257,7 @@ public class CourseGenerator {
 		return mm;
 	}
 
-	void paintBlock(int x, int y, int ww, int d, byte[][] block, boolean[][] visited) {
+	private void paintBlock(int x, int y, int ww, int d, byte[][] block, boolean[][] visited) {
 		if (0 > x || x >= ww || 0 > y || y >= d) {
 			return;
 		}
@@ -272,7 +272,7 @@ public class CourseGenerator {
 		}
 	}
 
-	boolean checkBlock(byte[][] m, int ww, int d) {
+	private boolean checkBlock(byte[][] m, int ww, int d) {
 		boolean[][] visited = new boolean[d][ww];
 		for (int x = 0; x < ww; x++) {
 			paintBlock(x, d - 1, ww, d, m, visited);
@@ -293,17 +293,17 @@ public class CourseGenerator {
 		return true;
 	}
 
-	byte[][] getLogo() {
+	private byte[][] getLogo() {
 		printDebugMsg("getLogo");
 		return Logos.LOGOS[w][(int) (Math.random() * Logos.LOGOS[w].length)];
 	}
 
-	byte[][] getPattern() {
+	private byte[][] getPattern() {
 		printDebugMsg("getPattern");
 		return Blocks.BLOCKS[w][(int) (Math.random() * Blocks.BLOCKS[w].length)];
 	}
 
-	byte[][] getBlock() {
+	private byte[][] getBlock() {
 		printDebugMsg("getBlock");
 		byte[][] block = null;
 
@@ -328,7 +328,7 @@ public class CourseGenerator {
 		return block;
 	}
 
-	int randomWidth() {
+	private int randomWidth() {
 		if (Math.random() > 0.7) {
 			return 20;
 		}
@@ -345,7 +345,7 @@ public class CourseGenerator {
 		return randomRange(WMIN, WMAX + 1);
 	}
 
-	int randomLength() {
+	private int randomLength() {
 		if (Math.random() > 0.7) {
 			return LMAX;
 		}
@@ -359,7 +359,7 @@ public class CourseGenerator {
 		return randomRange(LMIN, LMAX + 1);
 	}
 
-	int randomVision() {
+	private int randomVision() {
 		if (Math.random() > 0.5) {
 			return VMIN;
 		}
@@ -373,7 +373,7 @@ public class CourseGenerator {
 		return randomRange(VMIN, VMAX + 1);
 	}
 
-	void printDebugMsg(String msg) {
+	private void printDebugMsg(String msg) {
 		// System.out.println("[DEBUG] " + msg);
 	}
 
@@ -537,7 +537,7 @@ public class CourseGenerator {
 	/**
 	 * コースの残りの不明部分について、ジェネレータで生成して補完
 	 */
-	void generateCourse(byte[][] map) {
+	private void generateCourse(byte[][] map) {
 		int len = -1;
 		for (int i = 0; i < h; i++) {
 			if (map[i][0] == -1) {
@@ -588,7 +588,7 @@ public class CourseGenerator {
 	/**
 	 * コースの視界限界付近について、ロゴもしくはブロックで最初4行が一致するものがあれば補完
 	 */
-	void predictLogoOrBlock(byte[][] map) {
+	private void predictLogoOrBlock(byte[][] map) {
 		int visLimit = Util.getVis(map);
 		if (visLimit >= map.length) {
 			return;
@@ -656,7 +656,7 @@ public class CourseGenerator {
 	/**
 	 * コース先頭のロゴについて、最初4行が一致したら補完
 	 */
-	void predictFirstLogo(byte[][] map) {
+	private void predictFirstLogo(byte[][] map) {
 		for (byte[][] logo : Logos.LOGOS[w]) {
 			boolean check = true;
 			for (int i = 0; i < 4; i++) {
@@ -677,7 +677,7 @@ public class CourseGenerator {
 	/**
 	 * コース末尾のロゴについて、最初4行が一致したら補完
 	 */
-	void predictLastLogo(byte[][] map) {
+	private void predictLastLogo(byte[][] map) {
 		for (byte[][] logo : Logos.LOGOS[w]) {
 			int hIndex = h + 2 - logo.length;
 			if (map[hIndex][0] == -1) {

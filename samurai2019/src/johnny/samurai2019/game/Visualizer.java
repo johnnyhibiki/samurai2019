@@ -17,44 +17,44 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class Visualizer extends JFrame implements ChangeListener, ActionListener {
 
-	int tt, stepLimit, h, w, v;
-	GameInfoModel data;
+	private int tt, stepLimit, h, w, v;
+	private GameInfoModel data;
 
-	static final int MERGIN = 30;
-	static final int VISV = 9;
+	static final private int MERGIN = 30;
+	static final private int VISV = 9;
 
 	/**
 	 * ##### Game Manager #####
 	 **/
-	GameThread gameThread;
+	private GameThread gameThread;
 
 	/**
 	 * ##### Game Visualizer #####
 	 **/
-	static GameCanvas[] canvas; // P0, P1, Whole
-	static final int R1 = 10;
-	static final int R2 = 4;
+	static private GameCanvas[] canvas; // P0, P1, Whole
+	static final private int R1 = 10;
+	static final private int R2 = 4;
 
-	JLabel[] labels1, labels2;
-	JButton startButton;
-	JSlider stepSlider, speedSlider;
-	JComboBox<String> courseSB, ai0SB, ai1SB;
-	JTextArea[] inputAreas, outputAreas;
-	JScrollPane[] scrollpane;
+	private JLabel[] labels1, labels2;
+	private JButton startButton;
+	private JSlider stepSlider, speedSlider;
+	private JComboBox<String> courseSB, ai0SB, ai1SB;
+	private JTextArea[] inputAreas, outputAreas;
+	private JScrollPane[] scrollpane;
 
-	int step;
-	double[] goal;
-	byte[][] mMap, map;
-	int[][][] pInfos;
-	String[][] inputs, outputs;
+	private int step;
+	private double[] goal;
+	private byte[][] mMap, map;
+	private int[][][] pInfos;
+	private String[][] inputs, outputs;
 
-	void run() throws Exception {
+	private void run() throws Exception {
 		init();
 		reset();
 		this.setVisible(true);
 	}
 
-	void init() throws Exception {
+	private void init() throws Exception {
 		this.setTitle("SamurAI Coding 2018-2019 Visualizer");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(null);
@@ -147,7 +147,7 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 		this.add(ai1SB);
 	}
 
-	void reset() throws Exception {
+	private void reset() throws Exception {
 
 		startButton.setEnabled(true);
 
@@ -208,13 +208,13 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 		repaintCanvas();
 	}
 
-	void repaintCanvas() {
+	private void repaintCanvas() {
 		for (int i = 0; i < 3; i++) {
 			canvas[i].repaint();
 		}
 	}
 
-	String createInputInfo(int id, int step, int thinkTime, int[] mpInfo, int[] opInfo, byte[][] map) {
+	private String createInputInfo(int id, int step, int thinkTime, int[] mpInfo, int[] opInfo, byte[][] map) {
 		StringBuilder info = new StringBuilder();
 		info.append(step).append(System.lineSeparator());
 		info.append(thinkTime).append(System.lineSeparator()); // dummy
@@ -289,7 +289,7 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 
 		private final int id;
 
-		public GameCanvas(int id) {
+		GameCanvas(int id) {
 			this.id = id;
 		}
 
