@@ -48,13 +48,13 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 	private int[][][] pInfos;
 	private String[][] inputs, outputs;
 
-	private void run() throws Exception {
+	private void run() {
 		init();
 		reset();
 		this.setVisible(true);
 	}
 
-	private void init() throws Exception {
+	private void init() {
 		this.setTitle("SamurAI Coding 2018-2019 Visualizer");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(null);
@@ -147,7 +147,7 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 		this.add(ai1SB);
 	}
 
-	private void reset() throws Exception {
+	private void reset() {
 
 		startButton.setEnabled(true);
 
@@ -265,23 +265,20 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			if (e.getSource() == startButton) {
-				gameThread = new GameThread();
-				gameThread.start();
-				startButton.setEnabled(false);
-				repaintCanvas();
-			} else if (e.getSource() == courseSB) {
-				reset();
-				gameThread.interrupt();
-			} else if (e.getSource() == ai0SB) {
-				reset();
-				gameThread.interrupt();
-			} else if (e.getSource() == ai1SB) {
-				reset();
-				gameThread.interrupt();
-			}
-		} catch (Exception ee) {
+		if (e.getSource() == startButton) {
+			gameThread = new GameThread();
+			gameThread.start();
+			startButton.setEnabled(false);
+			repaintCanvas();
+		} else if (e.getSource() == courseSB) {
+			reset();
+			gameThread.interrupt();
+		} else if (e.getSource() == ai0SB) {
+			reset();
+			gameThread.interrupt();
+		} else if (e.getSource() == ai1SB) {
+			reset();
+			gameThread.interrupt();
 		}
 	}
 
@@ -421,7 +418,7 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		new Visualizer().run();
 	}
 }
