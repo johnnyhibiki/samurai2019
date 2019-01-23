@@ -282,7 +282,7 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 		}
 	}
 
-	class GameCanvas extends Canvas {
+	class GameCanvas extends JPanel {
 
 		private final int id;
 
