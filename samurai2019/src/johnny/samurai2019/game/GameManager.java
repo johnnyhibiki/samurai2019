@@ -1,10 +1,10 @@
 package johnny.samurai2019.game;
 
-import java.util.List;
-
 import johnny.samurai2019.common.GameInfoModel;
 import johnny.samurai2019.common.Util;
 import johnny.samurai2019.player.AIBase;
+
+import java.util.List;
 
 public class GameManager {
 
@@ -162,7 +162,7 @@ public class GameManager {
 
 	void test() {
 		List<String> courseNames = Util.getCourseNameList();
-		String[] aiNames = { "JohnnyAI001", "JohnnyAI003" };
+		String[] aiNames = {"JohnnyAI001", "JohnnyAI003"};
 
 		int[] score = new int[2];
 		for (String courseName : courseNames) {

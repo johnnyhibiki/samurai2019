@@ -1,11 +1,11 @@
 package johnny.samurai2019.player;
 
+import johnny.samurai2019.common.Util;
+import johnny.samurai2019.course.CourseGenerator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import johnny.samurai2019.common.Util;
-import johnny.samurai2019.course.CourseGenerator;
 
 public class JohnnyAI001 implements AIBase {
 
@@ -23,7 +23,7 @@ public class JohnnyAI001 implements AIBase {
 		vymax = -1;
 		vymin = -5;
 		ymin = -5;
-		for (int i = 1;; i++) {
+		for (int i = 1; ; i++) {
 			sum += i;
 			if (vxmax == -1 && w <= sum) {
 				vxmax = i - 1;

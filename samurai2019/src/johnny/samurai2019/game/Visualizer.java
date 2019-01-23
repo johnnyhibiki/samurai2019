@@ -1,23 +1,13 @@
 package johnny.samurai2019.game;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.JTextArea;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import johnny.samurai2019.common.GameInfoModel;
 import johnny.samurai2019.common.Util;
 import johnny.samurai2019.player.AIBase;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -33,10 +23,14 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 	static final int MERGIN = 30;
 	static final int VISV = 9;
 
-	/** ##### Game Manager ##### **/
+	/**
+	 * ##### Game Manager #####
+	 **/
 	GameThread gameThread;
 
-	/** ##### Game Visualizer ##### **/
+	/**
+	 * ##### Game Visualizer #####
+	 **/
 	static GameCanvas[] canvas; // P0, P1, Whole
 	static final int R1 = 10;
 	static final int R2 = 4;

@@ -1,10 +1,10 @@
 package johnny.samurai2019.common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Util {
 
@@ -33,7 +33,7 @@ public class Util {
 	 * 戻り値： 0 : プレイヤー0のみ行動可 1 : プレイヤー1のみ行動可 2 : 両プレイヤー行動不可
 	 */
 	public static int checkPriority(int sx0, int sy0, int ex0, int ey0, int sx1, int sy1, int ex1, int ey1,
-			byte[][] map) {
+									byte[][] map) {
 		byte tmp = 0;
 		boolean check = false;
 
@@ -198,12 +198,8 @@ public class Util {
 			return false;
 		}
 
-		if (((sx1 - ex1) * (sy0 - sy1) + (sy1 - ey1) * (sx1 - sx0))
-				* ((sx1 - ex1) * (ey0 - sy1) + (sy1 - ey1) * (sx1 - ex0)) > 0) {
-			return false;
-		}
-
-		return true;
+		return ((sx1 - ex1) * (sy0 - sy1) + (sy1 - ey1) * (sx1 - sx0))
+				* ((sx1 - ex1) * (ey0 - sy1) + (sy1 - ey1) * (sx1 - ex0)) <= 0;
 	}
 
 	public static boolean isSameArray(byte[] a, byte[] b) {

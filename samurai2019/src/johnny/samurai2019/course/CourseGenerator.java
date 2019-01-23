@@ -1,15 +1,15 @@
 package johnny.samurai2019.course;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import johnny.samurai2019.common.GameInfoModel;
 import johnny.samurai2019.common.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CourseGenerator {
 
-	static int[] DY = { 0, 1, 0, -1 };
-	static int[] DX = { 1, 0, -1, 0 };
+	static int[] DY = {0, 1, 0, -1};
+	static int[] DX = {1, 0, -1, 0};
 
 	static int WMIN = 5;
 	static int WMAX = 20;
