@@ -7,6 +7,9 @@ import johnny.samurai2019.player.AIBase;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -48,6 +51,27 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 	private int[][][] pInfos;
 	private String[][] inputs, outputs;
 
+	private static ObjectMapper MAPPER = new ObjectMapper();
+
+	public static GameInfoModel readGameInfoModel(String filePath) {
+		try {
+			return MAPPER.readValue(new File(filePath), GameInfoModel.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static void writeGameInfoModel(String filePath, GameInfoModel info) {
+		try {
+			MAPPER.writeValue(new File(filePath), info);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	private void run() {
 		init();
 		reset();
@@ -157,11 +181,11 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 			}
 		}
 
-		data = Util.readGameInfoModel("./resource/course/" + courseSB.getSelectedItem());
+		data = readGameInfoModel("./resource/course/" + courseSB.getSelectedItem());
 		w = data.getWidth();
 		h = data.getLength();
 		v = data.getVision();
-		tt = data.getThinkTime();
+		tt = data.getThinkTime() * 1000;
 		stepLimit = data.getStepLimit();
 
 		labels1[0].setText("w=" + w + " h=" + h + " v=" + v);
@@ -394,8 +418,12 @@ public class Visualizer extends JFrame implements ChangeListener, ActionListener
 						}
 
 						inputs[step][id] = createInputInfo(id, step, tt, pInfos[step][id], pInfos[step][1 - id], iMap);
+						long start = System.currentTimeMillis();
 						outputs[step][id] = players[id].fnc(step, tt, pInfos[step][id], pInfos[step][1 - id], iMap);
-						System.out.println(outputs[step][id]);
+						long end = System.currentTimeMillis();
+						System.out.println("PID : " + id);
+						System.out.println("TIME : " + (end - start) + "ms");
+						System.out.println("OUTPUT : " + outputs[step][id]);
 					}
 
 					pInfos[step + 1] = Util.copyIntMap(pInfos[step]);

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class JohnnyAI003 implements AIBase {
+public class JohnnyAI004 implements AIBase {
 
 	private int thinkTime, stepLimit, w, h, v;
 
@@ -19,15 +19,16 @@ public class JohnnyAI003 implements AIBase {
 
 	class State {
 		int x, y, vx, vy;
-		byte ax, ay;
+		byte ax, ay, opt1;
 
-		State(int x, int y, int vx, int vy, byte ax, byte ay) {
+		State(int x, int y, int vx, int vy, byte ax, byte ay, byte opt1) {
 			this.x = x;
 			this.y = y;
 			this.vx = vx;
 			this.vy = vy;
 			this.ax = ax;
 			this.ay = ay;
+			this.opt1 = opt1;
 		}
 
 		@Override
@@ -50,7 +51,7 @@ public class JohnnyAI003 implements AIBase {
 		vymin = -5;
 
 		int sum = 0;
-		for (int i = 1; ; i++) {
+		for (int i = 1;; i++) {
 			sum += i;
 			if (vxmax == -1 && w <= sum) {
 				vxmax = i - 1;
@@ -75,10 +76,20 @@ public class JohnnyAI003 implements AIBase {
 	public String fnc(int step, int remTime, int[] mpInfo, int[] opInfo, byte[][] map) {
 		int nowVis = Util.getVis(map);
 		if (preVis < nowVis) {
-			pMap = generator.predictCourse2(map);
+			pMap = generator.predictCourse4(map);
 			preVis = nowVis;
 		}
 
+		int[] opAns = null;
+		if (opInfo[1] != h) {
+			opAns = decideAction(1, step, remTime, opInfo, mpInfo, null);
+		}
+		int[] mpAns = decideAction(0, step, remTime, mpInfo, opInfo, opAns);
+
+		return mpAns[0] + " " + mpAns[1];
+	}
+
+	public int[] decideAction(int pid, int step, int remTime, int[] mpInfo, int[] opInfo, int[] opCom) {
 		byte[][] mMap = new byte[hh][w];
 		int nowVis2 = h + Y_MARGIN;
 		for (int i = 0; i < h; i++) {
@@ -103,17 +114,19 @@ public class JohnnyAI003 implements AIBase {
 		List<State> stateList = new ArrayList<State>();
 		List<State> newStateList = new ArrayList<State>();
 
-		State now = new State(mx, my, mpInfo[2], mpInfo[3], (byte) 0x00, (byte) 0x00);
+		State now = new State(mx, my, mpInfo[2], mpInfo[3], (byte) 0x00, (byte) 0x00, (byte) 0x00);
 		stateTable[now.hashCode()] = true;
 		stateList.add(now);
 
-		for (int depth = 1; depth <= 20; depth++) {
-			byte tmp = 99;
-			if (depth == 1) {
-				tmp = mMap[oy][ox];
-				mMap[oy][ox] = 1;
-			}
+		int depthMax = 30;
 
+		if (remTime < 1000) {
+			depthMax = 10;
+		} else if (pid == 1) {
+			depthMax = 15;
+		}
+
+		for (int depth = 1; depth <= depthMax; depth++) {
 			for (State state : stateList) {
 				for (byte i = 1; i >= -1; i--) {
 					int nvx = state.vx + i;
@@ -122,18 +135,40 @@ public class JohnnyAI003 implements AIBase {
 						for (byte j = 1; j >= -1; j--) {
 							int nvy = state.vy + j;
 							int ny = state.y + nvy;
-							if (0 <= ny && ny < hh && vymin <= nvy && nvy <= nowVis2 - my - 1 && ny >= my - v - 1) {
+							if (0 <= ny && ny < hh && vymin <= nvy && nvy <= vymax && ny >= my - v) {
 								byte nax = depth == 1 ? i : state.ax;
 								byte nay = depth == 1 ? j : state.ay;
+								byte nopt1 = state.opt1;
 
 								State newState = null;
 
-								if (Util.checkCourseOut(state.x, state.y, nx, ny, mMap)) {
-									newState = new State(state.x, state.y, 0, 0, nax, nay);
+								boolean cCheck = false;
+								if (depth == 1 && opCom != null) {
+									int nox = ox + opInfo[2] + opCom[0];
+									int noy = oy + opInfo[3] + opCom[1];
+
+									if (Util.checkCross(state.x, state.y, nx, ny, ox, oy, nox, noy)) {
+										int priority = Util.checkPriority(state.x, state.y, nx, ny, ox, oy, nox, noy,
+												mMap);
+
+										if (priority == 0) {
+											nopt1 = 1;
+										} else if (priority == 1) {
+											nopt1 = -1;
+											cCheck = true;
+										} else if (priority == 2) {
+											nopt1 = 0;
+											cCheck = true;
+										}
+									}
+								}
+
+								if (cCheck || Util.checkCourseOut(state.x, state.y, nx, ny, mMap)) {
+									newState = new State(state.x, state.y, 0, 0, nax, nay, nopt1);
 								} else if (mMap[ny][nx] == 2) {
-									newState = new State(nx, ny, 0, 0, nax, nay);
+									newState = new State(nx, ny, 0, 0, nax, nay, nopt1);
 								} else {
-									newState = new State(nx, ny, nvx, nvy, nax, nay);
+									newState = new State(nx, ny, nvx, nvy, nax, nay, nopt1);
 								}
 
 								int hash = newState.hashCode();
@@ -145,13 +180,6 @@ public class JohnnyAI003 implements AIBase {
 						}
 					}
 				}
-			}
-
-			// System.out.println(" size : " + depth + " = " +
-			// stateList.size());
-
-			if (depth == 1) {
-				mMap[oy][ox] = tmp;
 			}
 
 			if (newStateList.isEmpty()) {
@@ -179,18 +207,22 @@ public class JohnnyAI003 implements AIBase {
 		}
 
 		int max = -1000000;
+		int maxOpt1 = -100000;
 		int ansax = -100;
 		int ansay = -100;
 		for (State state : stateList) {
 			int eval = state.y;
-			if (max < eval) {
+			int opt1 = state.opt1;
+
+			if (max < eval || max == eval && maxOpt1 < opt1) {
 				max = eval;
+				maxOpt1 = opt1;
 				ansax = state.ax;
 				ansay = state.ay;
 			}
 		}
 
-		return ansax + " " + ansay;
+		return new int[] { ansax, ansay };
 	}
 
 	public String init(int thinkTime, int stepLimit, int w, int h, int v) {
@@ -244,7 +276,7 @@ public class JohnnyAI003 implements AIBase {
 	}
 
 	public static void main(String[] args) {
-		new JohnnyAI003().run();
+		new JohnnyAI004().run();
 	}
 
 }

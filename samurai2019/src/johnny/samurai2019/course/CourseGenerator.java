@@ -8,8 +8,8 @@ import java.util.List;
 
 public class CourseGenerator {
 
-	static private int[] DY = {0, 1, 0, -1};
-	static private int[] DX = {1, 0, -1, 0};
+	static private int[] DY = { 0, 1, 0, -1 };
+	static private int[] DX = { 1, 0, -1, 0 };
 
 	static private int WMIN = 5;
 	static private int WMAX = 20;
@@ -445,6 +445,67 @@ public class CourseGenerator {
 	/**
 	 * コースの不明部分を補完
 	 */
+	public byte[][] predictCourse4(byte[][] orgMap) {
+		byte[][] pMap = Util.copyByteMap(orgMap);
+
+		if (lastLogo == null) {
+			predictLastLogo(pMap);
+		}
+
+		if (lastLogo != null) {
+			for (int i = 4; i < lastLogo.length; i++) {
+				int hIndex2 = h - lastLogo.length + i;
+				if (pMap[hIndex2][0] == -1) {
+					for (int j = 0; j < w; j++) {
+						pMap[hIndex2][j] = lastLogo[i][j];
+					}
+				}
+			}
+			return pMap;
+		}
+
+		if (firstLogo == null) {
+			predictFirstLogo(pMap);
+		}
+
+		for (int i = 4; i < firstLogo.length; i++) {
+			if (pMap[i][0] == -1) {
+				for (int j = 0; j < w; j++) {
+					pMap[i][j] = firstLogo[i][j];
+				}
+			}
+		}
+
+		predictLogoOrBlock(pMap);
+
+		int visLimit = Util.getVis(pMap);
+		byte[][] lastBlock = null;
+		for (int i = Logos.LOGOS[w].length - 1; i >= 0; i--) {
+			if (visLimit <= h - Logos.LOGOS[w][i].length + 1) {
+				lastBlock = Logos.LOGOS[w][i];
+				break;
+			}
+		}
+
+		if (lastBlock == null) {
+			// ここにはこない。。はず
+			lastBlock = Logos.LOGOS[w][0];
+		}
+
+		int l1 = h - lastBlock.length;
+
+		for (int i = 0; i < lastBlock.length; i++) {
+			for (int j = 0; j < w; j++) {
+				pMap[l1 + i][j] = lastBlock[i][j];
+			}
+		}
+
+		return pMap;
+	}
+
+	/**
+	 * コースの不明部分を補完
+	 */
 	public byte[][] predictCourse2(byte[][] orgMap) {
 		byte[][] pMap = Util.copyByteMap(orgMap);
 
@@ -586,7 +647,7 @@ public class CourseGenerator {
 	}
 
 	/**
-	 * コースの視界限界付近について、ロゴもしくはブロックで最初4行が一致するものがあれば補完
+	 * コースの視界限界付近について、ロゴもしくはブロックで最初3/4行が一致するものがあれば補完
 	 */
 	private void predictLogoOrBlock(byte[][] map) {
 		int visLimit = Util.getVis(map);
@@ -595,14 +656,14 @@ public class CourseGenerator {
 		}
 
 		for (byte[][] logo : Logos.LOGOS[w]) {
-			for (int k = 4; k < logo.length; k++) {
+			for (int k = 3; k < logo.length; k++) {
 				int mapStartIndex = visLimit - k;
 				if (mapStartIndex < 0) {
 					break;
 				}
 
 				boolean check = true;
-				for (int i = 0; i < 4; i++) {
+				for (int i = 0; i < 3; i++) {
 					byte[] logoArray = logo[i];
 					if (!Util.isSameArray(logoArray, map[mapStartIndex + i])) {
 						check = false;
@@ -611,7 +672,7 @@ public class CourseGenerator {
 				}
 
 				if (check) {
-					for (int i = 4; i < logo.length; i++) {
+					for (int i = 3; i < logo.length; i++) {
 						if (map[mapStartIndex + i][0] == -1) {
 							for (int j = 0; j < w; j++) {
 								map[mapStartIndex + i][j] = logo[i][j];
@@ -654,12 +715,12 @@ public class CourseGenerator {
 	}
 
 	/**
-	 * コース先頭のロゴについて、最初4行が一致したら補完
+	 * コース先頭のロゴについて、最初3行が一致したら補完
 	 */
 	private void predictFirstLogo(byte[][] map) {
 		for (byte[][] logo : Logos.LOGOS[w]) {
 			boolean check = true;
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 3; i++) {
 				byte[] logoArray = logo[i];
 				if (!Util.isSameArray(logoArray, map[i])) {
 					check = false;
@@ -675,17 +736,17 @@ public class CourseGenerator {
 	}
 
 	/**
-	 * コース末尾のロゴについて、最初4行が一致したら補完
+	 * コース末尾のロゴについて、最初3行が一致したら補完
 	 */
 	private void predictLastLogo(byte[][] map) {
 		for (byte[][] logo : Logos.LOGOS[w]) {
-			int hIndex = h + 2 - logo.length;
+			int hIndex = h - logo.length + 2;
 			if (map[hIndex][0] == -1) {
 				continue;
 			}
 
 			boolean check = true;
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 3; i++) {
 				byte[] logoArray = logo[i];
 				if (!Util.isSameArray(logoArray, map[h - logo.length + i])) {
 					check = false;

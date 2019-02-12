@@ -1,7 +1,5 @@
 package johnny.samurai2019.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,25 +7,6 @@ import java.util.List;
 public class Util {
 
 	public static int MARGIN = 30;
-	private static ObjectMapper MAPPER = new ObjectMapper();
-
-	public static GameInfoModel readGameInfoModel(String filePath) {
-		try {
-			return MAPPER.readValue(new File(filePath), GameInfoModel.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	public static void writeGameInfoModel(String filePath, GameInfoModel info) {
-		try {
-			MAPPER.writeValue(new File(filePath), info);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * 戻り値： 0 : プレイヤー0のみ行動可 1 : プレイヤー1のみ行動可 2 : 両プレイヤー行動不可
@@ -262,7 +241,7 @@ public class Util {
 				sb.append(map[i][j]).append(j == map[i].length - 1 ? System.lineSeparator() : ",");
 			}
 		}
-		System.out.println(sb);
+		System.err.println(sb);
 	}
 
 	public static void main(String[] args) {
