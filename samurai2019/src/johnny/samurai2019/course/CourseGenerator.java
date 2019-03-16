@@ -445,6 +445,67 @@ public class CourseGenerator {
 	/**
 	 * コースの不明部分を補完
 	 */
+	public byte[][] predictCourse5(byte[][] orgMap) {
+		byte[][] pMap = Util.copyByteMap(orgMap);
+
+		if (lastLogo == null) {
+			predictLastLogo(pMap);
+		}
+
+		if (lastLogo != null) {
+			for (int i = 4; i < lastLogo.length; i++) {
+				int hIndex2 = h - lastLogo.length + i;
+				if (pMap[hIndex2][0] == -1) {
+					for (int j = 0; j < w; j++) {
+						pMap[hIndex2][j] = lastLogo[i][j];
+					}
+				}
+			}
+			return pMap;
+		}
+
+		if (firstLogo == null) {
+			predictFirstLogo(pMap);
+		}
+
+		for (int i = 4; i < firstLogo.length; i++) {
+			if (pMap[i][0] == -1) {
+				for (int j = 0; j < w; j++) {
+					pMap[i][j] = firstLogo[i][j];
+				}
+			}
+		}
+
+		predictLogoOrBlock(pMap);
+
+		int visLimit = Util.getVis(pMap);
+		byte[][] lastBlock = null;
+		for (int i = Logos.LOGOS[w].length - 1; i >= 0; i--) {
+			if (visLimit <= h - Logos.LOGOS[w][i].length + 2) {
+				lastBlock = Logos.LOGOS[w][i];
+				break;
+			}
+		}
+
+		if (lastBlock == null) {
+			// ここにはこない。。はず
+			lastBlock = Logos.LOGOS[w][0];
+		}
+
+		int l1 = h - lastBlock.length;
+
+		for (int i = 0; i < lastBlock.length; i++) {
+			for (int j = 0; j < w; j++) {
+				pMap[l1 + i][j] = lastBlock[i][j];
+			}
+		}
+
+		return pMap;
+	}
+
+	/**
+	 * コースの不明部分を補完
+	 */
 	public byte[][] predictCourse4(byte[][] orgMap) {
 		byte[][] pMap = Util.copyByteMap(orgMap);
 

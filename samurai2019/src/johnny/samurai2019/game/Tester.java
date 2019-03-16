@@ -32,7 +32,7 @@ public class Tester {
 			for (int i = 0; i < 2; i++) {
 				players[i] = (AIBase) cls[i].getDeclaredConstructor().newInstance();
 				String init = players[i].init(tt, stepLimit, w, h, v);
-				System.out.println(init);
+				// System.out.println(init);
 			}
 
 			String[] com = new String[2];
@@ -61,7 +61,7 @@ public class Tester {
 
 					com[id] = players[id].fnc(step, tt, inputPInfos[id], inputPInfos[1 - id], iMap);
 
-					System.out.println(com[id]);
+					// System.out.println(com[id]);
 				}
 
 				GameManager.action(w, h, map, pInfos, goal, com, step);
@@ -79,7 +79,7 @@ public class Tester {
 
 	private void test() {
 		List<String> courseNames = Util.getCourseNameList();
-		String[] aiNames = { "JohnnyAI004", "JohnnyAI003" };
+		String[] aiNames = { "JohnnyAI004", "JohnnyAI005" };
 
 		int[] score = new int[2];
 		for (String courseName : courseNames) {
@@ -94,8 +94,10 @@ public class Tester {
 
 			if (tmp[0] < tmp[1]) {
 				score[0] += 2;
+				System.err.println(aiNames[0] + " WIN");
 			} else if (tmp[1] < tmp[0]) {
 				score[1] += 2;
+				System.err.println(aiNames[1] + " WIN");
 			} else {
 				score[0]++;
 				score[1]++;
